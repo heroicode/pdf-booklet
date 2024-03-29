@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -o errexit -o nounset -o noclobber
+dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd); cd "$dir"
+
+command -v pdftk >/dev/null || {
+    brew install pdftk-java
+}
+[ -f "$dir"/booklet.swift ] || (
+    hash=2eb10f8874f407869f4b37f84202757988095955
+    curl -fsS "$(echo "https://raw.githubusercontent.com" \
+                "/boris42/booklet/$hash" \
+                "/booklet/main.swift" \
+                | sed 's/ //g')"\
+        -o "$dir"/booklet.swift
+)
